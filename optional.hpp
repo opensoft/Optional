@@ -7,6 +7,7 @@
 // The idea and interface is based on Boost.Optional library
 // authored by Fernando Luis Cacciola Carballal
 
+// clazy:skip
 # ifndef ___OPTIONAL_HPP___
 # define ___OPTIONAL_HPP___
 
