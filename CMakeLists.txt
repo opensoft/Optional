@@ -14,8 +14,8 @@
 #     #include "3rdparty/optional/optional.hpp"
 #
 
+cmake_minimum_required(VERSION 3.12.0)
 project(optional)
-cmake_minimum_required(VERSION 3.8.0)
 enable_testing()
 
 add_library(optional INTERFACE)
@@ -29,20 +29,26 @@ install(EXPORT optional-targets DESTINATION lib/cmake/3rdparty
 install(FILES optional.hpp DESTINATION include/3rdparty/optional)
 export (TARGETS optional FILE akrzemi1_optional-config.cmake)
 
-if (NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Android")
+if(MSVC)
+    set(OPTIONAL_TEST_COMPILER_FLAGS "-W4 -wd4100")
+else()
+    set(OPTIONAL_TEST_COMPILER_FLAGS "-Wall -Wextra -Wno-unused-variable")
+endif()
+
+if (NOT ANDROID)
     add_executable(test_optional test_optional.cpp)
     set_target_properties(test_optional PROPERTIES
         CXX_STANDARD 14
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
-        COMPILE_FLAGS "-Wall -Wextra -Wno-unused-variable"
+        COMPILE_FLAGS ${OPTIONAL_TEST_COMPILER_FLAGS}
     )
     add_executable(test_type_traits test_type_traits.cpp)
     set_target_properties(test_type_traits PROPERTIES
         CXX_STANDARD 14
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
-        COMPILE_FLAGS "-Wall -Wextra -Wno-unused-variable"
+        COMPILE_FLAGS ${OPTIONAL_TEST_COMPILER_FLAGS}
     )
 
     add_test(test_optional test_optional)
