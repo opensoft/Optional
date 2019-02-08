@@ -19,7 +19,7 @@ project(optional)
 enable_testing()
 
 add_library(optional INTERFACE)
-target_include_directories(optional INTERFACE
+target_include_directories(optional SYSTEM INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:include>)
 install(TARGETS optional EXPORT optional-targets)
@@ -35,7 +35,7 @@ else()
     set(OPTIONAL_TEST_COMPILER_FLAGS "-Wall -Wextra -Wno-unused-variable")
 endif()
 
-if (NOT ANDROID)
+if (NOT PROOF_CLANG_TIDY AND NOT ANDROID)
     add_executable(test_optional test_optional.cpp)
     set_target_properties(test_optional PROPERTIES
         CXX_STANDARD 14
